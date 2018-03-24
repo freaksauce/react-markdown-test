@@ -16,9 +16,6 @@ class App extends Component {
     fetch(myMarkdownFile)
     .then(response => response.text())
     .then(text => {
-      // Logs a string of Markdown content.
-      // Now you could use e.g. <rexxars/react-markdown> to render it.
-      console.log(text);
       this.setState({markdownContent: text})
     });
   }
