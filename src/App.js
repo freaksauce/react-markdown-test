@@ -8,19 +8,53 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      m1: null,
-      m2: null,
-      m3: null
+      m1: null
     }
-    this.getMarkdown(myMarkdownFile, 'm1')
-    this.getMarkdown('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/foo/foo.md', 'm2')
-    this.getMarkdown('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/bar/bar.md', 'm3')
+    this.fetchObj = {
+      headers: {
+        Authorization: 'Bearer 588ce3a5bded69e7fe84e52d96e39d1895bf5042'
+      },
+      mode: 'cors'
+    }
+    this.repoContentsUrl = 'https://api.github.com/repos/freaksauce/react-markdown-test/contents/src/content/'
+    // this.getMarkdownContent(myMarkdownFile, 'm1')
+    // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/foo/foo.md', 'm2')
+    // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/bar/bar.md', 'm3')
+    this.getRepoContents()
   }
-  getMarkdown(file, stateVar) {
-    fetch(file, {mode: 'cors'})
+  componentWillUpdate() {
+    console.log(this.state);
+  }
+  getRepoContents() {
+    fetch(this.repoContentsUrl, this.fetchObj)
+    .then(response => response.json())
+    .then(json => {
+      this.getMarkdownUrls(json)
+    });
+  }
+  getMarkdownUrls(fileArray) {
+    fileArray.forEach(file => {
+      const markdownUrl = `${this.repoContentsUrl}${file.name}`
+      this.getMarkdownFile(markdownUrl, file.name)
+    })
+  }
+  getMarkdownFile(markdownUrl, name) {
+    fetch(markdownUrl, this.fetchObj)
+    .then(response => response.json())
+    .then(json => {
+      // console.log('json: ', json[0]);
+      const markdownUrl = json[0].download_url;
+      this.getMarkdownContent(markdownUrl, name)
+    });
+  }
+  getMarkdownContent(file, name) {
+    console.log('file: ', file);
+    fetch(file, this.fetchObj)
     .then(response => response.text())
     .then(text => {
-      this.setState({[stateVar]: text})
+      console.log('name', name)
+      console.log('text', text);
+      this.setState({[name]: text})
     });
   }
   render() {
