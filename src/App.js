@@ -12,18 +12,19 @@ class App extends Component {
     }
     this.fetchObj = {
       headers: {
+        Accept: 'application/json',
         Authorization: 'Bearer 588ce3a5bded69e7fe84e52d96e39d1895bf5042'
       },
       mode: 'cors'
     }
     this.repoContentsUrl = 'https://api.github.com/repos/freaksauce/react-markdown-test/contents/src/content/'
-    // this.getMarkdownContent(myMarkdownFile, 'm1')
+    this.getMarkdownContent(myMarkdownFile, 'm1')
     // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/foo/foo.md', 'm2')
     // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/bar/bar.md', 'm3')
     this.getRepoContents()
   }
   componentWillUpdate() {
-    console.log(this.state);
+    
   }
   getRepoContents() {
     fetch(this.repoContentsUrl, this.fetchObj)
@@ -42,18 +43,15 @@ class App extends Component {
     fetch(markdownUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
-      // console.log('json: ', json[0]);
       const markdownUrl = json[0].download_url;
       this.getMarkdownContent(markdownUrl, name)
     });
   }
   getMarkdownContent(file, name) {
-    console.log('file: ', file);
-    fetch(file, this.fetchObj)
+    
+    fetch(file)
     .then(response => response.text())
     .then(text => {
-      console.log('name', name)
-      console.log('text', text);
       this.setState({[name]: text})
     });
   }
@@ -70,11 +68,11 @@ class App extends Component {
         }
         <hr />
         {this.state.m2 !== null &&
-          <ReactMarkdown source={this.state.m2} />
+          <ReactMarkdown source={this.state.foo} />
         }
         <hr />
         {this.state.m3 !== null &&
-          <ReactMarkdown source={this.state.m3} />
+          <ReactMarkdown source={this.state.bar} />
         }
         </div>
       </div>
