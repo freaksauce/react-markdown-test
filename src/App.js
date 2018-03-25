@@ -13,7 +13,7 @@ class App extends Component {
     this.fetchObj = {
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer 5adb544e22e7b0b6f85cf7a43a08d33a50ebde7f'
+        Authorization: 'Bearer 48605e3d73ddd7e1a7c0cad4e10a4ec67ba438a7'
       },
       mode: 'cors'
     }
@@ -26,14 +26,10 @@ class App extends Component {
   getRepoContents() {
     /**
      * fetch the contents of a specific directory in the github repo and return as an array of files
-     * TODO: check if file is a .md file before calling getMarkdownUrls()
      */
     fetch(this.repoContentsUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
-      // filter for .md files
-      console.log(json);
-      // const fileArray = json.filter(file => file)
       this.getMarkdownUrls(json)
     });
   }
@@ -49,10 +45,13 @@ class App extends Component {
   getMarkdownFile(markdownUrl, name) {
     /**
      * fetch the markdown file using the download_url
+     * TODO: check if file is a .md file before calling getMarkdownContent()
      */
     fetch(markdownUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
+      // filter for .md files
+      console.log('json', json);
       const markdownUrl = json[0].download_url;
       this.getMarkdownContent(markdownUrl, name)
     });
