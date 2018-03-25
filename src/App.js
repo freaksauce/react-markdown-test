@@ -13,7 +13,7 @@ class App extends Component {
     this.fetchObj = {
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer d274de8f83c5210a9d5823072359b8c457ac2af6'
+        Authorization: 'Bearer c78bc6b3ec717a131c1264c53293de72722e641f'
       },
       mode: 'cors'
     }
