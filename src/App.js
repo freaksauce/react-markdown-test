@@ -13,7 +13,7 @@ class App extends Component {
     this.fetchObj = {
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer 588ce3a5bded69e7fe84e52d96e39d1895bf5042'
+        Authorization: 'Bearer 5adb544e22e7b0b6f85cf7a43a08d33a50ebde7f'
       },
       mode: 'cors'
     }
@@ -32,6 +32,8 @@ class App extends Component {
     .then(response => response.json())
     .then(json => {
       // filter for .md files
+      console.log(json);
+      // const fileArray = json.filter(file => file)
       this.getMarkdownUrls(json)
     });
   }
