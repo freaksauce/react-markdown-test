@@ -13,7 +13,7 @@ class App extends Component {
     this.fetchObj = {
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer 48605e3d73ddd7e1a7c0cad4e10a4ec67ba438a7'
+        Authorization: 'Bearer d274de8f83c5210a9d5823072359b8c457ac2af6'
       },
       mode: 'cors'
     }
@@ -45,21 +45,25 @@ class App extends Component {
   getMarkdownFile(markdownUrl, name) {
     /**
      * fetch the markdown file using the download_url
-     * TODO: check if file is a .md file before calling getMarkdownContent()
      */
     fetch(markdownUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
       // filter for .md files
-      console.log('json', json);
-      const markdownUrl = json[0].download_url;
-      this.getMarkdownContent(markdownUrl, name)
+      const mdFiles = json.filter(file => file.name.includes('.md'))
+      // map over files to call get content
+      mdFiles.map((mdFile, index) => {
+        const markdownUrl = mdFile.download_url;
+        const name = mdFile.name
+        this.getMarkdownContent(markdownUrl, name)
+      })
     });
   }
   getMarkdownContent(file, name) {
     /**
      * save contents of .md file to local state
      */
+    console.log('getMarkdownContent', file, name);
     fetch(file)
     .then(response => response.text())
     .then(text => {
@@ -74,17 +78,13 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="App-intro">
-        {this.state.m1 !== null &&
-          <ReactMarkdown source={this.state.m1} />
-        }
+        <ReactMarkdown source={this.state.m1} />
         <hr />
-        {this.state.m2 !== null &&
-          <ReactMarkdown source={this.state.foo} />
-        }
+        <ReactMarkdown source={this.state['foo.md']} />
         <hr />
-        {this.state.m3 !== null &&
-          <ReactMarkdown source={this.state.bar} />
-        }
+        <ReactMarkdown source={this.state['bar.md']} />
+        <hr />
+        <ReactMarkdown source={this.state['bar-docs.md']} />
         </div>
       </div>
     );
