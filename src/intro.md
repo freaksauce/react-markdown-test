@@ -1,4 +1,4 @@
-This is a markdown example
+This is a markdown example from the local filesystem
 
 # trying a heading
 
