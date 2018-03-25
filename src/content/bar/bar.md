@@ -1,0 +1,1 @@
+This is the Bar _markdown_ __file__ which is hosted in a [github](https://github.com) repo.
