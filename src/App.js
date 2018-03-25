@@ -17,29 +17,37 @@ class App extends Component {
       },
       mode: 'cors'
     }
-    this.repoContentsUrl = 'https://api.github.com/repos/freaksauce/react-markdown-test/contents/src/content/'
+    // load a local markdown file to render
     this.getMarkdownContent(myMarkdownFile, 'm1')
-    // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/foo/foo.md', 'm2')
-    // this.getMarkdownContent('https://raw.githubusercontent.com/freaksauce/react-markdown-test/master/src/content/bar/bar.md', 'm3')
+    // url for the contents of a directory in the github repo
+    this.repoContentsUrl = 'https://api.github.com/repos/freaksauce/react-markdown-test/contents/src/content/'
     this.getRepoContents()
   }
-  componentWillUpdate() {
-    
-  }
   getRepoContents() {
+    /**
+     * fetch the contents of a specific directory in the github repo and return as an array of files
+     * TODO: check if file is a .md file before calling getMarkdownUrls()
+     */
     fetch(this.repoContentsUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
+      // filter for .md files
       this.getMarkdownUrls(json)
     });
   }
   getMarkdownUrls(fileArray) {
+    /**
+     * Loop over the array of files from github repo and get each markdown file
+     */
     fileArray.forEach(file => {
       const markdownUrl = `${this.repoContentsUrl}${file.name}`
       this.getMarkdownFile(markdownUrl, file.name)
     })
   }
   getMarkdownFile(markdownUrl, name) {
+    /**
+     * fetch the markdown file using the download_url
+     */
     fetch(markdownUrl, this.fetchObj)
     .then(response => response.json())
     .then(json => {
@@ -48,7 +56,9 @@ class App extends Component {
     });
   }
   getMarkdownContent(file, name) {
-    
+    /**
+     * save contents of .md file to local state
+     */
     fetch(file)
     .then(response => response.text())
     .then(text => {
